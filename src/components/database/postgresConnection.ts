@@ -1,6 +1,6 @@
-import { processTrigger, executeAction } from './triggersAndActions'
-import { actionLibrary } from './pluginsConnect'
-import * as config from '../config.json'
+import { processTrigger, executeAction } from '../triggersAndActions'
+import { actionLibrary } from '../pluginsConnect'
+import * as config from '../../config.json'
 import { Client, Pool, QueryResult } from 'pg'
 import {
   ActionInTemplate,
@@ -14,7 +14,7 @@ import {
   FilePayload,
   FileGetPayload,
   TriggerQueueUpdatePayload,
-} from '../types'
+} from '../../types'
 
 class PostgresDB {
   private static _instance: PostgresDB

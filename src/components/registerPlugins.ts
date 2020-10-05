@@ -9,7 +9,7 @@ import * as fs from 'fs'
 import path from 'path'
 import getAppRootDir from './getAppRoot'
 import * as config from '../config.json'
-import PostgresDB from './postgresConnect'
+import PostgresDB from './database/postgresConnection'
 
 const pluginFolder = path.join(getAppRootDir(), config.pluginsFolder)
 
