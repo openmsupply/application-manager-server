@@ -3,7 +3,7 @@ import getAppRootDir from './getAppRoot'
 import * as config from '../config.json'
 import { ActionLibrary, ActionInTemplate, TriggerPayload, ActionPayload } from '../types'
 import evaluateExpression from '../modules/evaluateExpression/evaluateExpression'
-import PostgresDB from '../components/postgresConnect'
+import PostgresDB from './database/postgresConnection'
 
 const schedule = require('node-schedule')
 
