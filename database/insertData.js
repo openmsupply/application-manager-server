@@ -77,45 +77,13 @@ const queries = [
                       nextElementCode: "BR2"
                       elementTypePluginCode: "drop_down"
                       visibilityCondition: {
-                        type: "boolean",
-                        operator: "AND",
+                        operator: "="
                         children: [
                           {
-                            operator: "=",
-          									children: [
-                              {
-                                operator: "objectProperties",
-                                children: [
-                                  {
-                                    value: {
-                                      property: "code"
-                                    }
-                                  }
-                                ]
-                              },
-                              {
-                                value: "Q3"
-                              }
-                            ]
-                          },
-                          {
-                            operator: "=",
-          									children: [
-                              {
-                                operator: "objectProperties",
-                                children: [
-                                  {
-                                    value: {
-                                      property: "value"
-                                    }
-                                  }
-                                ]
-                              },
-                              {
-                                value: "Manufacturer"
-                              }
-                            ]
+                            operator: "objectProperties"
+                            children: [{ value: { property: "Q3" } }]
                           }
+                          { value: "Manufacturer" }
                         ]
                       }
                       category: QUESTION
