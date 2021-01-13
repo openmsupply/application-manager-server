@@ -49,36 +49,32 @@ const remapObjectKeysWithPrefix = (prefix: string, object: Object) => {
     pp2pn3tp4_restrictTwo: "2"
   }
 */
-const compileJWT = (
-  { userId, username }: UserInfo,
-  templatePermissionRows: Array<PermissionRow>
-) => {
-  let JWT = { userId, username, aud: 'postgraphile' }
+const compileJWT = ({ userId, username }: UserInfo, templatePermissionRows: Array<PermissionRow>) =>
+  templatePermissionRows.reduce(
+    (JWT, permissionRow: PermissionRow) => {
+      const { templatePermissionRestrictions, templateId, templatePermissionId } = permissionRow
 
-  templatePermissionRows.forEach((permissionRow: PermissionRow) => {
-    const { templatePermissionRestrictions, templateId, templatePermissionId } = permissionRow
+      let permissionAbbreviation = getPermissionNameAbbreviation(permissionRow)
+      let newJWT = {
+        [permissionAbbreviation]: true,
+        ...JWT,
+      }
+      // It's possible to have permission name given to user without any templatePermissionIds
+      if (!templatePermissionId) newJWT
 
-    let permissionAbbreviation = getPermissionNameAbbreviation(permissionRow)
+      permissionAbbreviation = getTemplatePermissionAbbreviation(permissionRow)
 
-    JWT = {
-      [permissionAbbreviation]: true,
-      ...JWT,
-    }
-    // It's possible to have permission name given to user without any templatePermissionIds
-    if (!templatePermissionId) return // 'continue' syntax for for each
-
-    permissionAbbreviation = getTemplatePermissionAbbreviation(permissionRow)
-    JWT = {
-      [permissionAbbreviation]: true,
-      ...remapObjectKeysWithPrefix(permissionAbbreviation, {
-        ...templatePermissionRestrictions,
-        templateId,
-      }),
-      ...JWT,
-    }
-  })
-  return JWT
-}
+      return {
+        [permissionAbbreviation]: true,
+        ...remapObjectKeysWithPrefix(permissionAbbreviation, {
+          ...templatePermissionRestrictions,
+          templateId,
+        }),
+        ...newJWT,
+      }
+    },
+    { userId, username, aud: 'postgraphile' }
+  )
 
 // Removes previously generated row level policies and resintates them based on current permission settings
 // out: [ 'CREATE POLICY "view_pp3pn3" ON "application" FOR SELECT USING (jwt_get_boolean('pp3pn3') = true and user_id = jwt_get_text('currentUser') AND template_id = jwt_get_bigint('pp3pn3_templateId')' ]
