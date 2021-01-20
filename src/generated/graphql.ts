@@ -706,6 +706,7 @@ export type Application = Node & {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   /** Reads a single `Template` that is related to this `Application`. */
   template?: Maybe<Template>;
   /** Reads a single `User` that is related to this `Application`. */
@@ -726,7 +727,6 @@ export type Application = Node & {
   notifications: NotificationsConnection;
   stage?: Maybe<Scalars['String']>;
   stageNumber?: Maybe<Scalars['Int']>;
-  status?: Maybe<ApplicationStatus>;
 };
 
 
@@ -854,6 +854,8 @@ export type ApplicationCondition = {
   isActive?: Maybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `trigger` field. */
   trigger?: Maybe<Trigger>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: Maybe<ApplicationStatus>;
 };
 
 /** A filter to be used against `Application` object types. All fields are combined with a logical ‘and.’ */
@@ -874,12 +876,12 @@ export type ApplicationFilter = {
   isActive?: Maybe<BooleanFilter>;
   /** Filter by the object’s `trigger` field. */
   trigger?: Maybe<TriggerFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: Maybe<ApplicationStatusFilter>;
   /** Filter by the object’s `stage` field. */
   stage?: Maybe<StringFilter>;
   /** Filter by the object’s `stageNumber` field. */
   stageNumber?: Maybe<IntFilter>;
-  /** Filter by the object’s `status` field. */
-  status?: Maybe<ApplicationStatusFilter>;
   /** Filter by the object’s `applicationSections` relation. */
   applicationSections?: Maybe<ApplicationToManyApplicationSectionFilter>;
   /** Some related `applicationSections` exist. */
@@ -934,6 +936,7 @@ export type ApplicationInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -1197,6 +1200,7 @@ export type ApplicationPatch = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -1262,6 +1266,7 @@ export type ApplicationResponseApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -1665,6 +1670,7 @@ export type ApplicationSectionApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -1957,6 +1963,8 @@ export enum ApplicationsOrderBy {
   IsActiveDesc = 'IS_ACTIVE_DESC',
   TriggerAsc = 'TRIGGER_ASC',
   TriggerDesc = 'TRIGGER_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
@@ -2039,6 +2047,7 @@ export type ApplicationStageHistoryApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -2733,6 +2742,7 @@ export type ApplicationTemplateIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -2982,6 +2992,7 @@ export type ApplicationUserIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -5671,6 +5682,7 @@ export type FileApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -7364,6 +7376,7 @@ export type NotificationApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -9024,6 +9037,7 @@ export type Query = Node & {
   user?: Maybe<User>;
   userByUsername?: Maybe<User>;
   userOrganisation?: Maybe<UserOrganisation>;
+  applicationStatus?: Maybe<ApplicationStatus>;
   applicationStatusHistoryApplicationId?: Maybe<Scalars['Int']>;
   jwtGetBigint?: Maybe<Scalars['BigInt']>;
   jwtGetBoolean?: Maybe<Scalars['Boolean']>;
@@ -9692,6 +9706,12 @@ export type QueryUserOrganisationArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryApplicationStatusArgs = {
+  appId?: Maybe<Scalars['Int']>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryApplicationStatusHistoryApplicationIdArgs = {
   applicationStageHistoryId?: Maybe<Scalars['Int']>;
 };
@@ -9964,6 +9984,7 @@ export type ReviewApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -10091,6 +10112,7 @@ export type ReviewAssignmentApplicationIdFkeyApplicationCreateInput = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14805,6 +14827,7 @@ export type UpdateApplicationOnApplicationForApplicationTemplateIdFkeyPatch = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14825,6 +14848,7 @@ export type UpdateApplicationOnApplicationForApplicationUserIdFkeyPatch = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14846,6 +14870,7 @@ export type UpdateApplicationOnApplicationResponseForApplicationResponseApplicat
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14867,6 +14892,7 @@ export type UpdateApplicationOnApplicationSectionForApplicationSectionApplicatio
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14888,6 +14914,7 @@ export type UpdateApplicationOnApplicationStageHistoryForApplicationStageHistory
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14909,6 +14936,7 @@ export type UpdateApplicationOnFileForFileApplicationIdFkeyPatch = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14930,6 +14958,7 @@ export type UpdateApplicationOnNotificationForNotificationApplicationIdFkeyPatch
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14951,6 +14980,7 @@ export type UpdateApplicationOnReviewAssignmentForReviewAssignmentApplicationIdF
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -14972,6 +15002,7 @@ export type UpdateApplicationOnReviewForReviewApplicationIdFkeyPatch = {
   outcome?: Maybe<ApplicationOutcome>;
   isActive?: Maybe<Scalars['Boolean']>;
   trigger?: Maybe<Trigger>;
+  status?: Maybe<ApplicationStatus>;
   templateToTemplateId?: Maybe<ApplicationTemplateIdFkeyInput>;
   userToUserId?: Maybe<ApplicationUserIdFkeyInput>;
   applicationSectionsUsingId?: Maybe<ApplicationSectionApplicationIdFkeyInverseInput>;
@@ -20751,6 +20782,7 @@ export type ApplicationResolvers<ContextType = any, ParentType extends Resolvers
   outcome?: Resolver<Maybe<ResolversTypes['ApplicationOutcome']>, ParentType, ContextType>;
   isActive?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   trigger?: Resolver<Maybe<ResolversTypes['Trigger']>, ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['ApplicationStatus']>, ParentType, ContextType>;
   template?: Resolver<Maybe<ResolversTypes['Template']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   applicationSections?: Resolver<ResolversTypes['ApplicationSectionsConnection'], ParentType, ContextType, RequireFields<ApplicationApplicationSectionsArgs, 'orderBy'>>;
@@ -20762,7 +20794,6 @@ export type ApplicationResolvers<ContextType = any, ParentType extends Resolvers
   notifications?: Resolver<ResolversTypes['NotificationsConnection'], ParentType, ContextType, RequireFields<ApplicationNotificationsArgs, 'orderBy'>>;
   stage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   stageNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  status?: Resolver<Maybe<ResolversTypes['ApplicationStatus']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -21943,6 +21974,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
   userByUsername?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByUsernameArgs, 'username'>>;
   userOrganisation?: Resolver<Maybe<ResolversTypes['UserOrganisation']>, ParentType, ContextType, RequireFields<QueryUserOrganisationArgs, 'id'>>;
+  applicationStatus?: Resolver<Maybe<ResolversTypes['ApplicationStatus']>, ParentType, ContextType, RequireFields<QueryApplicationStatusArgs, never>>;
   applicationStatusHistoryApplicationId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<QueryApplicationStatusHistoryApplicationIdArgs, never>>;
   jwtGetBigint?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType, RequireFields<QueryJwtGetBigintArgs, never>>;
   jwtGetBoolean?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryJwtGetBooleanArgs, never>>;

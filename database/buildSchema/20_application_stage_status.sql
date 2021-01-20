@@ -34,7 +34,7 @@ RETURNS INT AS $$
 			AND status_is_current = true
 		) AS app_stage_num
 	WHERE app_stage_num.application_id = app.id;
-$$ LANGUAGE sql STABLE;
+$$ LANGUAGE sql IMMUTABLE;
 
 
 -- Function to expose stage name field on application table in GraphQL
@@ -47,11 +47,11 @@ RETURNS VARCHAR AS $$
 			AND status_is_current = true
 		) AS app_stage
 	WHERE app_stage.application_id = app.id;
-$$ LANGUAGE sql STABLE;
+$$ LANGUAGE sql IMMUTABLE;
 
 
--- Function to expose status field on application table in GraphQL
-CREATE FUNCTION public.application_status(a public.application)
+-- Function to expose status field on application as generated column
+CREATE or REPLACE FUNCTION public.application_status(app_id int)
 RETURNS application_status AS $$
 	SELECT status FROM
 		( SELECT application_id, status FROM
@@ -59,5 +59,10 @@ RETURNS application_status AS $$
 			WHERE stage_is_current = true
 			AND status_is_current = true
 		) AS app_status
-	WHERE app_status.application_id = a.id;
-$$ LANGUAGE sql STABLE;
+	WHERE app_status.application_id = app_id;
+$$ LANGUAGE SQL IMMUTABLE;
+
+ALTER TABLE public.application
+	ADD status application_status
+	GENERATED ALWAYS AS (
+	application_status(application.id)) STORED;
