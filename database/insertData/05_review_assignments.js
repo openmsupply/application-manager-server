@@ -47,12 +47,13 @@ exports.queries = [
         reviewAssignment: {
           applicationId: 4000
           stageId: 5
+          level: 1
           userToReviewerId: {
             connectByUsername: {
               username: "testReviewer2"
             }
           }
-          status: AVAILABLE_FOR_SELF_ASSIGNMENT
+          status: ASSIGNED
           availableTemplateSectionIds: [1006]
           reviewQuestionAssignmentsUsingId: {
             create: [
