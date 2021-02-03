@@ -646,7 +646,7 @@ testData.stringSubstitutionNoReplacements = {
 
 testData.stringSubstitutionEmptyStringInReplacements = {
   operator: 'stringSubstitution',
-  children: ['You like: %1%2%3', '', '\\n-Cake', '\\n-Candy'],
+  children: ['You like: %1%1', '', '\\n-Cake', '\\n-Candy'],
 }
 
 // API operator
