@@ -5,13 +5,14 @@ module.exports['updateReviewAssignmentsStatus'] = async function (parameters: an
   const db = databaseMethods(DBConnect)
   console.log('Updating review assignment statuses...')
   try {
-    const { reviewAssignmentId, trigger } = parameters
+    const { reviewAssignmentId, userId } = parameters
     // NB: reviewAssignmentId comes from record_id on TriggerPayload when
     // triggered from review_assignment table
     const {
       application_id: applicationId,
       stage_number: stageNumber,
       level: reviewLevel,
+      reviewer_id: reviewerId,
     } = await db.getReviewAssignmentById(reviewAssignmentId)
 
     const otherReviewAssignments = await db.getMatchingReviewAssignments(
@@ -26,7 +27,7 @@ module.exports['updateReviewAssignmentsStatus'] = async function (parameters: an
         const { id, status } = reviewAssignment
         return {
           id,
-          status: trigger === 'onReviewSelfAssign' ? AssignmentStatus.SELF_ASSIGNED_OTHER : status,
+          status: userId === reviewerId ? AssignmentStatus.SELF_ASSIGNED_OTHER : status,
         }
       })
     )

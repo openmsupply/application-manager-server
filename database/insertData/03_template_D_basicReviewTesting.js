@@ -330,16 +330,16 @@ exports.queries = [
               }
               {
                 actionCode: "updateReviewAssignmentsStatus"
-                trigger: ON_REVIEW_SELF_ASSIGN
+                trigger: ON_REVIEW_ASSIGN
                 # sequence: 1
                 parameterQueries: {
                   reviewAssignmentId: {
                     operator: "objectProperties"
                     children: ["applicationData.record_id"]
                   }
-                  trigger: {
+                  userId: {
                     operator: "objectProperties"
-                    children: ["applicationData.trigger"]
+                    children: ["applicationData.userId"]
                   }
                 }
               }
