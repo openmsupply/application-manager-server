@@ -204,7 +204,11 @@ export async function executeAction(
     const parametersEvaluated = await evaluateParameters(payload.parameter_queries, evaluatorParams)
 
     // TO-DO: If Scheduled, create a Job instead
-    const actionResult = await actionLibrary[payload.code](parametersEvaluated, DBConnect)
+    const actionResult = await actionLibrary[payload.code](
+      parametersEvaluated,
+      DBConnect,
+      payload.application_data
+    )
 
     return await DBConnect.executedActionStatusUpdate({
       status: actionResult.status,
