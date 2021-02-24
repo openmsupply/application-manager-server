@@ -67,6 +67,8 @@ const startServer = async () => {
   // Unique name/email/organisation check
   server.get('/check-unique', async (request: any, reply) => {
     const { type, value } = request.query
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+
     if (value === '' || value === undefined) {
       reply.send({
         unique: false,

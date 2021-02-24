@@ -62,26 +62,46 @@ exports.queries = [
                       id: 2002
                       code: "S1Q2"
                       index: 2
-                      title: "Organisation Activity"
-                      elementTypePluginCode: "dropdownChoice"
+                      title: "Concat with above"
+                      elementTypePluginCode: "shortText"
                       category: QUESTION
-                      parameters: {
-                        label: "Select type of activity"
-                        options: ["Manufacturer", "Importer", "Producer"]
-                      }
+                      validationMessage: "na"
+                      parameters: { label: "Concat with above" }
                     }
                     {
                       id: 2003
                       code: "S1Q3"
-                      index: 5
-                      title: "Organisation national or international"
-                      elementTypePluginCode: "dropdownChoice"
+                      index: 3
+                      title: "Validates concat of above two field for uniqueness"
+                      elementTypePluginCode: "shortText"
                       category: QUESTION
-                      parameters: {
-                        label: "Organisation Nationality"
-                        description: "Select the nationality of this company:"
-                        options: ["National", "International"]
+                      validation: 
+                      {
+                        operator: "API"
+                        children: [
+                          "http://localhost:8080/check-unique"
+                          ["type", "value"]
+                          "organisation"
+                          {
+                            operator: "CONCAT"
+                            children: [
+                              {
+                                operator: "objectProperties"
+                                children: ["responses.S1Q1.text"]
+                              }
+                              {
+                                operator: "objectProperties"
+                                children: ["responses.S1Q2.text"]
+                              }
+                            ]
+                          }
+                          "unique"
+                        ]
                       }
+                       
+                      
+                      validationMessage: "Above two fields concated are not unique"
+                      parameters: { label: "Validates concat of above two field for uniqueness" }
                     }
                     {
                       id: 2004
