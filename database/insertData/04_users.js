@@ -296,6 +296,7 @@ exports.queries = [
               { permissionNameId: 1000 }
               { permissionNameId: 2000 }
               { permissionNameId: 4000 }
+              { permissionNameId: 9000 }
             ]
           }
         }

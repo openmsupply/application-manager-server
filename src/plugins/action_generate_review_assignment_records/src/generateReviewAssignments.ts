@@ -30,6 +30,11 @@ module.exports['generateReviewAssignments'] = async function (input: any, DBConn
       nextReviewLevel
     )
 
+    const nextLevelAssigners = await DBConnect.getAssignersForApplicationStageLevel(
+      templateId,
+      stageNumber
+    )
+
     const reviewAssignments: ReviewAssignmentObject = {}
 
     // Build reviewers into object map so we can combine duplicate user_orgs
@@ -65,6 +70,16 @@ module.exports['generateReviewAssignments'] = async function (input: any, DBConn
     const reviewAssignmentIds = await DBConnect.addReviewAssignments(
       Object.values(reviewAssignments)
     )
+
+    for (const reviewAssignmentId of reviewAssignmentIds) {
+      for (const assigner of nextLevelAssigners) {
+        await DBConnect.addReviewAssignmentAssignerJoin(
+          reviewAssignmentId,
+          assigner.user_id,
+          assigner.organisation_id || null
+        )
+      }
+    }
 
     console.log('Review Assignment IDs:', reviewAssignmentIds)
 

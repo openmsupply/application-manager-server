@@ -117,6 +117,10 @@ class DBConnect {
 
   public getReviewersForApplicationStageLevel = PostgresDB.getReviewersForApplicationStageLevel
 
+  public addReviewAssignmentAssignerJoin = PostgresDB.addReviewAssignmentAssignerJoin
+
+  public getAssignersForApplicationStageLevel = PostgresDB.getAssignersForApplicationStageLevel
+
   public addReviewAssignments = PostgresDB.addReviewAssignments
 
   public isFullyAssignedLevel1 = PostgresDB.isFullyAssignedLevel1

@@ -13,7 +13,7 @@ SELECT
     COUNT(*) FILTER (WHERE review_status_history.status = 'Submitted') AS number_of_submitted_reviews,
     COUNT(*) FILTER (WHERE review_status_history.status = 'Changes Requested') AS number_of_changes_requested_reviews,
     "user".id AS reviewer_id,
-    application.id AS application_id
+    application.id AS review_status_list_application_id
 FROM
     "user"
     CROSS JOIN application

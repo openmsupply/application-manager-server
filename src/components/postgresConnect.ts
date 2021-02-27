@@ -696,10 +696,13 @@ class PostgresDB {
     reviewLevel: number
   ) => {
     const text = `
-    SELECT user_id, organisation_id, restrictions FROM 
-    permission_join pj JOIN template_permission tp
-    ON pj.permission_name_id = tp.permission_name_id
+    SELECT user_id, organisation_id, restrictions 
+    FROM permission_join pj 
+    JOIN template_permission tp ON pj.permission_name_id = tp.permission_name_id
+    JOIN permission_name on pj.permission_name_id = permission_name.id
+    JOIN permission_policy on permission_policy.id = permission_name.permission_policy_id
     WHERE template_id = $1
+    AND permission_policy.type = 'Review'
     AND stage_number = $2
     AND level = $3
     `
@@ -711,6 +714,58 @@ class PostgresDB {
       return result.rows
     } catch (err) {
       console.log(err.message)
+      throw err
+    }
+  }
+
+  public getAssignersForApplicationStageLevel = async (templateId: number, stageNumber: number) => {
+    const text = `
+    SELECT user_id, organisation_id, restrictions 
+    FROM permission_join pj 
+    JOIN template_permission tp ON pj.permission_name_id = tp.permission_name_id
+    JOIN permission_name on pj.permission_name_id = permission_name.id
+    JOIN permission_policy on permission_policy.id = permission_name.permission_policy_id
+    WHERE template_id = $1
+    AND permission_policy.type = 'Assign'
+    AND stage_number = $2
+    `
+    try {
+      const result = await this.query({
+        text,
+        values: [templateId, stageNumber],
+      })
+      return result.rows
+    } catch (err) {
+      console.log(err.message)
+      throw err
+    }
+  }
+
+  public addReviewAssignmentAssignerJoin = async (
+    reviewAssignmentsId: number,
+    assignerId: number,
+    organisationId: number
+  ) => {
+    const text = `
+    INSERT INTO review_assignment_assigner_join (
+      review_assignment_id, assigner_id, organisation_id
+      )
+    VALUES ($1, $2, $3)
+    ON CONFLICT (review_assignment_id,assigner_id ${
+      organisationId ? ', organisation_id' : ''
+    }) WHERE organisation_id IS ${organisationId ? 'NOT' : ''} NULL DO
+      UPDATE SET assigner_id = $2
+    RETURNING id `
+
+    try {
+      return (
+        await this.query({
+          text,
+          values: [reviewAssignmentsId, assignerId, organisationId],
+        })
+      ).rows[0].id
+    } catch (err) {
+      console.log(err)
       throw err
     }
   }
