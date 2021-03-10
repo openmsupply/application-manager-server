@@ -385,65 +385,6 @@ exports.queries = [
                   newStatus: "Submitted"
                 }
               }
-              {
-                actionCode: "trimResponses"
-                trigger: ON_REVIEW_SUBMIT
-                sequence: 2
-                parameterQueries: {
-                  reviewId: {
-                    operator: "objectProperties"
-                    children: ["applicationData.record_id"]
-                  }
-                  timestamp: {
-                    operator: "objectProperties"
-                    children: ["output.reviewStatusHistoryTimestamp"]
-                  }
-                }
-              }
-              {
-                actionCode: "updateReviewVisibility"
-                sequence: 2
-                trigger: ON_REVIEW_SUBMIT
-                condition: {
-                  operator: "AND"
-                  children: [
-                    {
-                      operator: "="
-                      children: [
-                        {
-                          operator: "objectProperties"
-                          children: [
-                            "applicationData.reviewData.latestDecision.decision"
-                          ]
-                        }
-                        "LIST_OF_QUESTIONS"
-                      ]
-                    }
-                    {
-                      operator: "objectProperties"
-                      children: ["applicationData.reviewData.isLastLevel"]
-                    }
-                  ]
-                }
-                parameterQueries: {
-                  reviewId: {
-                    operator: "objectProperties"
-                    children: ["applicationData.record_id"]
-                  }
-                }
-              }
-              {
-                actionCode: "changeStatus"
-                trigger: ON_REVIEW_SUBMIT
-                sequence: 2
-                parameterQueries: {
-                  reviewId: {
-                    operator: "objectProperties"
-                    children: ["applicationData.record_id"]
-                  }
-                  newStatus: { value: "Submitted" }
-                }
-              }
             ]
           }
           templatePermissionsUsingId: {
