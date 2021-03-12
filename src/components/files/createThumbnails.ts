@@ -49,6 +49,14 @@ const createThumbnail = async ({
       return getGenericThumbnailPath(type)
     }
   } else if (mimetype === 'application/pdf') {
+    const options = {
+      saveFilename: `${basename}_${unique_id}_thumb`,
+      savePath: filesPath,
+      format: 'png',
+      width: thumbnailMaxWidth,
+      height: thumbnailMaxHeight,
+    }
+    fromPath(origFilePath, options).convert(1)
     return getGenericThumbnailPath('pdf')
   } else if (['.pdf', '.doc', '.docx'].includes(ext))
     return getGenericThumbnailPath(`_/${ext.replace('.', '')}`)
