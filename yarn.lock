@@ -5955,6 +5955,11 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
+pdf2image@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/pdf2image/-/pdf2image-1.2.3.tgz#ff8851350f0f45ae1637e3d945436ff841b8e987"
+  integrity sha1-/4hRNQ8PRa4WN+PZRUNv+EG46Yc=
+
 pdf2pic@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/pdf2pic/-/pdf2pic-2.1.4.tgz#5c6cbd7809a60b11f6504eb85c386aa2012b1dcf"

@@ -12,7 +12,7 @@ import * as config from '../../config.json'
 import path from 'path'
 import fs from 'fs'
 const sharp = require('sharp')
-import { fromPath } from 'pdf2pic'
+const pdf2image = require('pdf2image')
 const { thumbnailMaxWidth, thumbnailMaxHeight } = config
 
 interface ThumbnailInput {
@@ -51,16 +51,19 @@ const createThumbnail = async ({
   } else if (mimetype === 'application/pdf') {
     const options = {
       density: 100,
-      saveFilename: `${basename}_${unique_id}_thumb`,
-      savePath: filesPath,
-      format: 'png',
-      // width: thumbnailMaxWidth,
-      // height: thumbnailMaxHeight,
+      // saveFilename: `${basename}_${unique_id}_thumb`,
+      // savePath: filesPath,
+      outputType: 'png',
+      outputFormat: '%s_thumb',
+      pages: '1',
+      width: thumbnailMaxWidth,
+      height: thumbnailMaxHeight,
     }
-    const convertToPdf = fromPath(origFilePath, options)
     try {
-      await convertToPdf(1)
-      await fs.rename(`${thumbnailFilePath}.1.png`, `${thumbnailFilePath}.png`, () => {})
+      // const result = await
+      pdf2image.convertPDF(origFilePath, options).then((result: any) => console.log(result))
+      // console.log(result)
+      // await fs.rename(`${thumbnailFilePath}.1.png`, `${thumbnailFilePath}.png`, () => {})
       return `${basename}_${unique_id}_thumb.png`
     } catch {
       return getGenericThumbnailPath('pdf')
