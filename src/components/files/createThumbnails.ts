@@ -50,12 +50,13 @@ const createThumbnail = async ({
     }
   } else if (mimetype === 'application/pdf') {
     const options = {
-      density: 100,
+      density: 75,
       outputType: 'png',
       outputFormat: `${filesPath}/%s_thumb`,
       pages: '1',
-      width: thumbnailMaxWidth,
-      height: thumbnailMaxHeight,
+      backgroundColor: '#FFFFFF',
+      // width: thumbnailMaxWidth,
+      // height: thumbnailMaxHeight,
     }
     try {
       // const result = await
