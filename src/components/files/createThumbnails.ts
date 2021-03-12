@@ -51,10 +51,8 @@ const createThumbnail = async ({
   } else if (mimetype === 'application/pdf') {
     const options = {
       density: 100,
-      // saveFilename: `${basename}_${unique_id}_thumb`,
-      // savePath: filesPath,
       outputType: 'png',
-      outputFormat: '%s_thumb',
+      outputFormat: `${filesPath}/%s_thumb`,
       pages: '1',
       width: thumbnailMaxWidth,
       height: thumbnailMaxHeight,
